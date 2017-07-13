@@ -23,7 +23,7 @@ cursor.executemany("INSERT INTO amedas(code, pref, name, kana, address, lat_d, l
 connection.commit()
 
 # 気象庁Webサイトからcsvを取得
-data_url = 'http://www.data.jma.go.jp/obd/stats/data/mdrr/pre_rct/alltable/pre24h00_'+datetime+'.csv'
+data_url = 'http://www.data.jma.go.jp/obd/stats/data/mdrr/pre_rct/alltable/preall00_'+datetime+'.csv'
 data_req = urllib.request.Request(data_url)
 with urllib.request.urlopen(data_req) as response:
     reader = csv.reader(response.read().decode('shift-jis').splitlines())
@@ -36,6 +36,12 @@ for r in reader:
     row = cursor.fetchone()
     lat = float(row[0]) + float(row[1])/60
     lon = float(row[2]) + float(row[3])/60
+    value1h = float(r[19]) if r[19] else None
+    value3h = float(r[23]) if r[23] else None
+    value24h = float(r[27]) if r[27] else None
+    value48h = float(r[31]) if r[31] else None
+    value72h = float(r[35]) if r[35] else None
+
     feature = {
         "geometry": {
             "type": "Point",
@@ -49,12 +55,14 @@ for r in reader:
             "code": r[0],
             "pref": r[1],
             "name": r[2],
-            "value": float(r[9])
+            "value1h": value1h,
+            "value3h": value3h,
+            "value24h": value24h,
+            "value48h": value48h,
+            "value72h": value72h
         }
     }
     features.append(feature)
-
-print(features[0]['properties']['name'])
 
 featurecollection = {"type":"FeatureCollection","features":features}
 
