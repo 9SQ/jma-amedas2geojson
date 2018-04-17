@@ -1,4 +1,5 @@
-#jma-amedas2geojson
+jma-amedas2geojson
+======
 
 気象庁 [最新の気象データCSVダウンロード](http://www.data.jma.go.jp/obd/stats/data/mdrr/docs/csv_dl_readme.html)よりアメダス降水量データを取得し、GeoJSONを生成する
 

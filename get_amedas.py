@@ -2,7 +2,6 @@ import sys, shutil
 import csv, json
 import urllib.request
 import sqlite3
-import codecs
 
 argvs = sys.argv
 argc = len(argvs)
